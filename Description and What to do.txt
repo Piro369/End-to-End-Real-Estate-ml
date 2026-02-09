@@ -1,0 +1,15 @@
+REAL ESTATE DATA
+----------------
+Data is of Apartments,Independent Floors and more.
+In one row there are multiple instances about Apartments. (See PriceDetails)
+
+COLUMN NAMES:
+PropertyName
+PropertySubName --> contain more than one instance
+NearbyLocations 
+LocationAdvantages
+Link --> not useful
+PriceDetails 
+TopFacilities
+
+Create few new columns namely 'Hospital_Near','School_Near','RailwayStation_Near' etc having Binary Values 0 or 1.

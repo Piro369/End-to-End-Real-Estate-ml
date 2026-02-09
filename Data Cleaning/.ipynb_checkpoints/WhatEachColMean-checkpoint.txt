@@ -1,0 +1,13 @@
+Type --> House / Flat / Farm House
+Price --> in PKR (crore,lakh or arab)
+Bath(s) --> no.of Bathrooms
+Area --> Marla / Kanal
+Purpose --> For Sale
+Bedrooms --> No.of Bedrooms
+Added -->
+Location --> Which sector or town , Islamabad , Islamabad Capital (which phase of town not given)
+Description --> How many Marlas, Dimensions , Location Details (e.g G14/4) , Is Double/Single/Triple Story / 
+        Storey or not & Double unit / unite ? , How many Rooms + Which type of Rooms , Is at Prime Location , 
+        **Frequently no. is mentioned before the room e.g(2 Tv Longue, Kitchen)** , Is Corner House , Water 
+        bore ? , Which Phase , **Sometimes there are no commas between two different entities** , 
+    Rooms --- > Kitchens , TV longue , Drawing Room, Dining Room , Double Heighted Office 
