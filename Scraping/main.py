@@ -13,14 +13,15 @@ from tqdm import tqdm  # Used to show a nice progress bar
 # --- Configuration ---
 INPUT_CSV = "Zameen_400_Pages.csv"
 URL_COLUMN = "URL"
-OUTPUT_CSV = "final_data_(2601_to_3000_rows).csv"
-URL_LIMIT = 10  # Scrape the first 10 URLs as requested
-UPPER_LIMIT = 3000
-LOWER_LIMIT = 2601
+OUTPUT_CSV = "final_data_(5001_to_5500_rows).csv"
+UPPER_LIMIT = 5500
+LOWER_LIMIT = 5001
 BUTTON_CLASS_NAME = "_2b94111a"  # The class for the "Send email" button
+DETAILS_CLASS_NAME = "_3dc8d08d" # The class for the main property details container
 # ---------------------
+
 #
-# --- Parsing Functions (from extract_property_details.py) ---
+# --- Parsing Functions ---
 #
 
 def clean_text(text):
@@ -36,27 +37,21 @@ def extract_details(soup):
     These are in an <ul> with class '_3dc8d08d'.
     """
     data = {}
-    # First, find the container list
-    details_container = soup.find('ul', class_='_3dc8d08d')
+    details_container = soup.find('ul', class_=DETAILS_CLASS_NAME)
     
     if not details_container:
-        # Don't print a warning for every page, just return empty
         return data
 
-    # Now, find all 'li' items inside that container
     details_list = details_container.find_all('li') 
     
     for item in details_list:
-        # The first span is the key (e.g., "Type")
         key_span = item.find('span', class_='ed0db22a')
-        # The second span is the value (e.g., "House")
         value_span = item.find('span', class_='_2fdf7fc5')
         
         if key_span and value_span:
             key = clean_text(key_span.get_text())
             value = clean_text(value_span.get_text())
             
-            # Special handling for Price, as it's nested
             if key == 'Price':
                 price_div = value_span.find('div', class_='_2923a568')
                 if price_div:
@@ -69,11 +64,9 @@ def extract_details(soup):
 def extract_description(soup):
     """
     Extracts the property description text.
-    This is inside a span with class '_3547dac9'.
     """
     description_span = soup.find('span', class_='_3547dac9')
     if description_span:
-        # Use .get_text() with a separator to handle <br> tags gracefully
         description = description_span.get_text(separator='\n', strip=True)
         return clean_text(description)
     return None
@@ -81,7 +74,6 @@ def extract_description(soup):
 def extract_amenities(soup):
     """
     Extracts all amenities, grouped by their category.
-    The main container is '_49fc0232'.
     """
     data = {}
     amenities_container = soup.find('ul', class_='_49fc0232')
@@ -89,18 +81,14 @@ def extract_amenities(soup):
     if not amenities_container:
         return data
         
-    # Each 'li' inside is a category (e.g., "Main Features", "Rooms")
     categories = amenities_container.find_all('li', class_='_51519f00', recursive=False)
     
     for category in categories:
-        # Find the category title
         title_div = category.find('div', class_='d0142259')
         if not title_div:
             continue
             
         category_title = clean_text(title_div.get_text())
-        
-        # Find all amenities listed within this category
         amenities_list = []
         amenity_items = category.find_all('li', class_='_59261156')
         
@@ -109,7 +97,6 @@ def extract_amenities(soup):
             if amenity_text:
                 amenities_list.append(amenity_text)
         
-        # Join the list of amenities with a comma for a single DataFrame cell
         if amenities_list:
             data[f"Amenities: {category_title}"] = ", ".join(amenities_list)
             
@@ -121,56 +108,59 @@ def extract_amenities(soup):
 
 def process_url(url, driver):
     """
-    Opens a single URL, clicks buttons, gets HTML, and parses it.
-    Returns a dictionary of scraped data.
+    Opens a single URL, checks if it's valid, clicks buttons, gets HTML, and parses it.
     """
     try:
         driver.get(url)
-        # Wait a max of 10 seconds for the buttons to appear
-        wait = WebDriverWait(driver, 10) 
+        
+        # --- NEW FAST CHECK ---
+        # Wait max 2 seconds for the core details container to load. 
+        # If it doesn't load quickly, the page is likely a dead link or lacks data.
+        try:
+            WebDriverWait(driver, 2).until(
+                EC.presence_of_element_located((By.CLASS_NAME, DETAILS_CLASS_NAME))
+            )
+        except Exception:
+            # Skip this URL silently to save time
+            return None
+        # ----------------------
 
-        # Wait for at least one button to be present
-        all_buttons = wait.until(
-            EC.presence_of_all_elements_located((By.CLASS_NAME, BUTTON_CLASS_NAME))
-        )
-        
-        # Click all buttons found (usually 2)
-        for button in all_buttons:
-            try:
-                # Use JavaScript click as it's more reliable
-                driver.execute_script("arguments[0].scrollIntoView(true);", button)
-                time.sleep(0.5) # Short pause for scroll
-                driver.execute_script("arguments[0].click();", button)
-            except Exception as e:
-                # Log a warning but continue the script
-                print(f"  - Warning: Could not click a button on {url}. Error: {e}")
-        
-        # Wait 1 second for any JS to execute after clicking
-        # Note: This is part of the delay you mentioned for scaling.
-        time.sleep(1) 
+        # If the check passes, we look for the buttons. 
+        # Wait time reduced to 4 seconds since the page is already mostly loaded.
+        try:
+            wait = WebDriverWait(driver, 4) 
+            all_buttons = wait.until(
+                EC.presence_of_all_elements_located((By.CLASS_NAME, BUTTON_CLASS_NAME))
+            )
+            
+            for button in all_buttons:
+                try:
+                    driver.execute_script("arguments[0].scrollIntoView(true);", button)
+                    time.sleep(0.5) 
+                    driver.execute_script("arguments[0].click();", button)
+                except Exception as e:
+                    print(f"  - Warning: Could not click a button on {url}. Error: {e}")
+            
+            time.sleep(1) 
+        except Exception:
+            # If buttons aren't found, we just ignore the error and keep scraping 
+            # the data we already confirmed exists.
+            pass
 
-        # Now that clicks are done, get the page source
-        html_content = driver.page_source
-        
         # Parse with BeautifulSoup
+        html_content = driver.page_source
         soup = BeautifulSoup(html_content, 'html.parser')
         
-        # This dictionary will hold all our data for this one property
-        property_data = {}
+        property_data = {'Scraped_URL': url}
         
-        # Add the URL itself so we know which property this is
-        property_data['Scraped_URL'] = url
-        
-        # 1. Extract Details
+        # Extract all details
         details = extract_details(soup)
         property_data.update(details)
         
-        # 2. Extract Description
         description = extract_description(soup)
         if description:
             property_data['Description'] = description
             
-        # 3. Extract Amenities
         amenities = extract_amenities(soup)
         property_data.update(amenities)
         
@@ -185,16 +175,13 @@ def process_url(url, driver):
 #
 
 def main():
-    # 1. Setup Selenium Driver
     print("Setting up Selenium WebDriver...")
     service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
-    # Run in headless mode (no browser window) for speed and scaling
     options.add_argument('--headless')
-    options.add_argument('--log-level=3') # Suppress non-fatal console logs
+    options.add_argument('--log-level=3') 
     driver = webdriver.Chrome(service=service, options=options)
     
-    # 2. Read Input CSV
     print(f"Reading URLs from {INPUT_CSV}...")
     try:
         df_input = pd.read_csv(INPUT_CSV)
@@ -215,21 +202,17 @@ def main():
         driver.quit()
         return
 
-    # 3. Loop and Scrape
     all_property_data = []
     print("Starting scraper...")
     
-    # Use tqdm for a progress bar
     for url in tqdm(urls_to_scrape, desc="Scraping pages"):
         data = process_url(url, driver)
         if data:
             all_property_data.append(data)
     
-    # 4. Quit Driver
     driver.quit()
     print("\nWebDriver closed.")
 
-    # 5. Create Final DataFrame
     if not all_property_data:
         print("No data was scraped. Exiting.")
         return
@@ -237,7 +220,6 @@ def main():
     print("Creating final DataFrame...")
     df_output = pd.DataFrame(all_property_data)
     
-    # 6. Save Output CSV
     df_output.to_csv(OUTPUT_CSV, index=False, encoding='utf-8-sig')
     print(f"Successfully scraped {len(df_output)} properties.")
     print(f"Data saved to {OUTPUT_CSV}")

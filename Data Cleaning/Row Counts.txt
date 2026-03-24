@@ -1,0 +1,3 @@
+Before any preprocessing --> 2874
+After Removing Duplication --> 2868
+After Location Preprocessing --> 2866

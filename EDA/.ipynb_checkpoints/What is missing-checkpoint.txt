@@ -1,0 +1,5 @@
+New scraping that contains the exact location.
+
+Univariate Analysis --> Some Floors above 2 are misleading --> Use Description to correct it . 
+
+In Rooms --> 0 means Nan --> go back to Cleaning-2 and change the code.

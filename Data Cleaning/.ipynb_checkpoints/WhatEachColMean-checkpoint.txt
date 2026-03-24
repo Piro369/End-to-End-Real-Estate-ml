@@ -1,13 +1,46 @@
 Type --> House / Flat / Farm House
+
 Price --> in PKR (crore,lakh or arab)
+
 Bath(s) --> no.of Bathrooms
+
 Area --> Marla / Kanal
+
 Purpose --> For Sale
+
 Bedrooms --> No.of Bedrooms
-Added -->
+
+Added --> When it was added
+
 Location --> Which sector or town , Islamabad , Islamabad Capital (which phase of town not given)
+
 Description --> How many Marlas, Dimensions , Location Details (e.g G14/4) , Is Double/Single/Triple Story / 
         Storey or not & Double unit / unite ? , How many Rooms + Which type of Rooms , Is at Prime Location , 
         **Frequently no. is mentioned before the room e.g(2 Tv Longue, Kitchen)** , Is Corner House , Water 
-        bore ? , Which Phase , **Sometimes there are no commas between two different entities** , 
+        bore ? , Which Phase , **Sometimes there are no commas between two different entities** , Solar Panel available in few,
+    Few has Generator
     Rooms --- > Kitchens , TV longue , Drawing Room, Dining Room , Double Heighted Office 
+
+Amenities: Main Features --> Built in year (Few not given or some abnormality, Parking spaces, windows type, 
+	floors, lobby in building, the rest of features are present in every property, few properties have 
+	very few main features (not given or something else)
+
+Amenities: Rooms --> no of Bedrooms, Bathrooms, Servant Quarters, Kitchens, Store Rooms are given. The no.of of the rest
+	are not specified. Gym, Powder room, Prayer room, Study room are very common. Lounge or sitting room is rare.
+	Drawing room and Dining room are very common. Steam rooms are also
+	$$Check the whether gym, powder room, prayer room and steam rooms are there$$
+
+Amenities: Bussiness and Communication --> Every property same thing in common.
+	Business Center or Media Room in Building, Conference Room in Building, Intercom, ATM Machines is rare (Flats only)
+
+Amenities: Community Features --> Every property has the same thing.
+
+Amenities: Healthcare Recreational --> Every property has the same thing. There are some features missing in a few.
+
+Amenities: Nearby Locations --> Same thing. Very few have not this feature "Distance from airport(Kms)"
+
+Amenities: Other Facilites --> "Maintenance Staff" and "Facilities for Disabled" are present and absent simultaneously.
+	"Laundry or Dry Cleaning Facility" and "Communal/Shared Kitchen" are rare (Flats). There is a feature "Pets not Allowed" (some Flats only)
+	"Security Staff" is present in all.
+
+**There are some rows with Installments**

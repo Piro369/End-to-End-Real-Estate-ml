@@ -1,0 +1,6 @@
+How to perform Data Cleaning
+
+Check for Abnormalities and mistakes or any kind of error.
+
+- First go to excel and manually observe the data and take Points.
+- Look through the data using python and take Points

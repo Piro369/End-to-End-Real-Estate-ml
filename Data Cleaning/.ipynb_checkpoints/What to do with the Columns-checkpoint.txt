@@ -1,0 +1,31 @@
+Scraped_URL --> Remove
+
+Price --> Extract the price from the column
+
+Bath(s) --> There is a '-' category, so extract the no of bath(s) from 'Amenities: Room'
+
+Area --> Need to make it a single unit (Marla or Kanal)
+
+Purpose --> Remove
+
+Added --> Remove
+
+Location --> Extract the Town/Sector 
+
+Description --> Extract the following: Dimensions, Location details, Storey unit, How many 
+    rooms + Type of rooms , Is prime Location, Is corner House, Water bore available,          Which Phase/Block,  Solar Panel available, Elevator
+Amenitites: Main Features --> Extract the following BuiltinYear, WindowsType, IsFurnished, HowManyFloors, ElectricityBackupAvail, NoofParkingSpaces, LobbyInBuilding
+Amenities: Rooms --> Extract the no.of Bedrooms,Bathrooms,Servant Quarters, Kitchen,Store Rooms, Lounge, Powder Room, Drawing Room, Dining Room, LaundryRoom
+
+Amenities: Main Features --> Extract the following 
+    Built in Year, WindowsType, Is Furnished, No of Floors, Electricity Backup, No of Parking Spaces, Lobby in Building
+
+Amenities: Room --> Extract the following Information
+    No of: Bedrooms, Bathrooms, Servant Quarters, Kitchen, Store Rooms, Lounge, Powder Room, Drawing Room, Dining Room , Laundry Room
+
+Amenties: Business and Communication --> Extract the Following:
+    ATM Machines, Media Room, Conference Room, Intercom
+
+Intial Amount --> Remove
+Monthly Installment --> Remove
+Remaining Installments --> Remove

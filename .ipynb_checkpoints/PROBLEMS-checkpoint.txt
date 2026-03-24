@@ -1,0 +1,7 @@
+Locations --> Change the Scraping script to scrape this info also
+
+Storey Unit and Floor Mixup --> Storey Unit information is more reliable use, but when Storey Unit is Nan use FLoor.
+
+Bathrooms and Bedrooms 2 columns (both have different values)
+
+Need to drop Parking Spaces
