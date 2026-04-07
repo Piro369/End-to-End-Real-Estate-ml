@@ -13,9 +13,9 @@ from tqdm import tqdm  # Used to show a nice progress bar
 # --- Configuration ---
 INPUT_CSV = "Zameen_400_Pages.csv"
 URL_COLUMN = "URL"
-OUTPUT_CSV = "final_data_(5001_to_5500_rows).csv"
-UPPER_LIMIT = 5500
-LOWER_LIMIT = 5001
+OUTPUT_CSV = "datasets\\final_data_(3301_to_3800_rows).csv"
+UPPER_LIMIT = 3800
+LOWER_LIMIT = 3301
 BUTTON_CLASS_NAME = "_2b94111a"  # The class for the "Send email" button
 DETAILS_CLASS_NAME = "_3dc8d08d" # The class for the main property details container
 # ---------------------
@@ -182,16 +182,24 @@ def main():
     options.add_argument('--log-level=3') 
     driver = webdriver.Chrome(service=service, options=options)
     
-    print(f"Reading URLs from {INPUT_CSV}...")
+    print(f"Reading data from {INPUT_CSV}...")
     try:
-        df_input = pd.read_csv(INPUT_CSV)
-        if URL_COLUMN not in df_input.columns:
+        input_data = pd.read_csv(INPUT_CSV)
+        
+        # Check if required columns exist
+        if URL_COLUMN not in input_data.columns:
             print(f"Error: CSV file '{INPUT_CSV}' must have a column named '{URL_COLUMN}'")
             driver.quit()
             return
+            
+        if 'Location' not in input_data.columns:
+            print(f"Error: CSV file '{INPUT_CSV}' must have a column named 'Location'")
+            driver.quit()
+            return
         
-        urls_to_scrape = df_input[URL_COLUMN].loc[LOWER_LIMIT:UPPER_LIMIT].tolist()
-        print(f"Found {len(urls_to_scrape)} URLs to scrape (limit is {LOWER_LIMIT} till {UPPER_LIMIT}).")
+        # Slice the dataset based on limits
+        data_to_scrape = input_data.loc[LOWER_LIMIT:UPPER_LIMIT]
+        print(f"Found {len(data_to_scrape)} records to scrape (limit is {LOWER_LIMIT} till {UPPER_LIMIT}).")
         
     except FileNotFoundError:
         print(f"Error: Input file not found: {INPUT_CSV}")
@@ -205,9 +213,16 @@ def main():
     all_property_data = []
     print("Starting scraper...")
     
-    for url in tqdm(urls_to_scrape, desc="Scraping pages"):
+    # Iterate through rows to keep the original Location data linked to the URL
+    for index, row in tqdm(data_to_scrape.iterrows(), total=len(data_to_scrape), desc="Scraping pages"):
+        url = row[URL_COLUMN]
+        original_location = row['Location']
+        
         data = process_url(url, driver)
+        
+        # If scraping succeeded, add the location and append to our main list
         if data:
+            data['Real Location'] = original_location
             all_property_data.append(data)
     
     driver.quit()
@@ -217,11 +232,17 @@ def main():
         print("No data was scraped. Exiting.")
         return
 
-    print("Creating final DataFrame...")
-    df_output = pd.DataFrame(all_property_data)
+    print("Creating final dataset...")
+    output_data = pd.DataFrame(all_property_data)
     
-    df_output.to_csv(OUTPUT_CSV, index=False, encoding='utf-8-sig')
-    print(f"Successfully scraped {len(df_output)} properties.")
+    # Optional: Reorder columns so 'Real Location' appears right after 'Scraped_URL'
+    cols = output_data.columns.tolist()
+    if 'Real Location' in cols and 'Scraped_URL' in cols:
+        cols.insert(cols.index('Scraped_URL') + 1, cols.pop(cols.index('Real Location')))
+        output_data = output_data[cols]
+    
+    output_data.to_csv(OUTPUT_CSV, index=False, encoding='utf-8-sig')
+    print(f"Successfully scraped {len(output_data)} properties.")
     print(f"Data saved to {OUTPUT_CSV}")
 
 if __name__ == "__main__":

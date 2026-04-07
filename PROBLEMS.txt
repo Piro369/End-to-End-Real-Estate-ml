@@ -5,3 +5,5 @@ Storey Unit and Floor Mixup --> Storey Unit information is more reliable use, bu
 Bathrooms and Bedrooms 2 columns (both have different values)
 
 Need to drop Parking Spaces
+
+Also add this column 'Floor in Buildings'
