@@ -13,9 +13,9 @@ from tqdm import tqdm  # Used to show a nice progress bar
 # --- Configuration ---
 INPUT_CSV = "Zameen_400_Pages.csv"
 URL_COLUMN = "URL"
-OUTPUT_CSV = "datasets\\final_data_(3301_to_3800_rows).csv"
-UPPER_LIMIT = 3800
-LOWER_LIMIT = 3301
+OUTPUT_CSV = "datasets\\final_data_(9501_to_10027_rows).csv"
+UPPER_LIMIT = 10027
+LOWER_LIMIT = 9501
 BUTTON_CLASS_NAME = "_2b94111a"  # The class for the "Send email" button
 DETAILS_CLASS_NAME = "_3dc8d08d" # The class for the main property details container
 # ---------------------

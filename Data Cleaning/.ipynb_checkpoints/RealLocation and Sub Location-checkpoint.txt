@@ -1,0 +1,3 @@
+Real Location --> sector, block, which mall (for flats)
+
+Sub-Location --> high level location (e,g dha phase 2)
