@@ -11,5 +11,7 @@ __pycache__/
 *.csv
 *.xlsx
 *.pkl
+*.joblib
 
 Scraping/
+To delete/

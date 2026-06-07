@@ -4,3 +4,10 @@ selenium
 requests
 flask
 tqdm
+xgboost
+matplotlib
+seaborn
+wordcloud
+scikit-learn
+category-encoders
+plotly
