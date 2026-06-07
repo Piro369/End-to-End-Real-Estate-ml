@@ -1,4 +1,4 @@
-# Real Estate Price Prediction — Machine Learning Pipeline
+# Real Estate Price Prediction -  Machine Learning Pipeline
 
 An end-to-end data science and machine learning pipeline built to predict property prices using data from Zameen.com. This repository covers the core backend engineering, data collection, rigorous preprocessing, exploratory analysis, and predictive modeling stages of the project.
 
@@ -6,7 +6,7 @@ An end-to-end data science and machine learning pipeline built to predict proper
 
 ## 🚀 Looking for the Web Application?
 > **Note:** This repository contains the data engineering and model training pipeline. The interactive UI dashboard built with Streamlit can be found here:
-> 👉 **[Link to Streamlit Frontend Repository]([REPLACE_WITH_YOUR_STREAMLIT_REPO_URL](https://real-estate-369.streamlit.app/))**
+> 👉 **[Link to Streamlit Frontend App](https://real-estate-369.streamlit.app/)**
 
 ---
 
