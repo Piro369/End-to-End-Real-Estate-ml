@@ -1,5 +1,0 @@
-numpy 
-pandas 
-selenium
-requests
-flask

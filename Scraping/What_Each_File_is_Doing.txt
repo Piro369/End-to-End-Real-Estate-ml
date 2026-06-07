@@ -1,6 +1,0 @@
-
-Web Scraping 
-    app.py --> Extracts the basic information about properties - Dataset: Zameen_400_Pages.csv
-    main.py --> Extracts more information by going through each property link from the dataset (created by app.py).
-
-    main.py --> RUN IT TO EXTRACT DATA		
