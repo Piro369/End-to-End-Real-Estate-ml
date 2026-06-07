@@ -12,6 +12,7 @@ __pycache__/
 *.xlsx
 *.pkl
 *.joblib
+/*.txt
 
 Scraping/
 To delete/
