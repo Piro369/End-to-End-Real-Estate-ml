@@ -14,14 +14,12 @@ An end-to-end data science and machine learning pipeline built to predict proper
 
 The project is structured chronologically, following standard data science lifecycles:
 
-* **`Scraping/`** – Custom Selenium and BeautifulSoup web scraping framework used to extract raw real estate listings, including location, features, and price metrics.
 * **`1. Data Cleaning`** – Initial parsing of scraped strings, handling structural anomalies, drop-splitting structural categories, and initial row evaluations.
 * **`2. EDA`** – Exploratory Data Analysis leveraging univariate and multivariate distributions to uncover key patterns, real estate insights, and geographical trends.
 * **`3. Outlier Detection`** – Dynamic filtering of skewed distributions and removing extreme price/area anomalies across different property types (houses vs. flats).
 * **`4. Missing Values Imputation`** – Strategic handling of null elements customized by sub-locations and property characteristics to prevent data leakage.
 * **`5. Feature Selection`** – Feature engineering, data splits, and isolation of highly correlated or redundant variables to optimize model performance.
 * **`6. Model Selection`** – Training, hyperparameter tuning, and cross-validation comparisons across multiple architectures (including Tree-based regressors like XGBoost and Random Forest). Production pipelines are exported as serialized models (`.joblib`).
-* **`Analysis/`** – Supplementary notebooks evaluating geographical coordinates (Latitude/Longitude mapping) and algorithmic recommender systems.
 
 ---
 
