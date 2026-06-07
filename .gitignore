@@ -1,1 +1,13 @@
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Large Data files (if applicable)
 *.csv
+*.xlsx
+*.pkl
